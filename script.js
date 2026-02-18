@@ -99,6 +99,7 @@ function handleRouting() {
 
   // Render Data based on active page
   if (path === "profile") renderProfile();
+  if (path === "login") renderLoginVerificationNotice();
   if (path === "accounts") renderAccounts();
   if (path === "departments") renderDepartments();
   if (path === "requests") renderRequests();
@@ -147,8 +148,23 @@ function simulateEmailVerification() {
     user.verified = true;
     saveToStorage();
     localStorage.removeItem("unverified_email");
-    alert("Email Verified! Please Login.");
+    localStorage.setItem("show_login_verified_notice", "true");
     navigateTo("login");
+  }
+}
+
+function renderLoginVerificationNotice() {
+  const alertBox = document.getElementById("login-verified-alert");
+  if (!alertBox) return;
+
+  const shouldShowNotice =
+    localStorage.getItem("show_login_verified_notice") === "true";
+
+  if (shouldShowNotice) {
+    alertBox.classList.remove("d-none");
+    localStorage.removeItem("show_login_verified_notice");
+  } else {
+    alertBox.classList.add("d-none");
   }
 }
 
